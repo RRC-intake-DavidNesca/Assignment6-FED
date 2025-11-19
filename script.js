@@ -135,10 +135,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Attach a submit handler to the form so we can process the game when the user finishes
     // (This uses the DOM events pattern from your modules.) :contentReference[oaicite:4]{index=4}
     form.addEventListener("submit", handleFormSubmit);
-    // Attach a click handler for starting a new player flow (defined below as a stub for now)
+    // Attach a click handler for starting a new player flow
     newPlayerButton.addEventListener("click", newPlayer);
 
-    // Provide a function that now computes score and appends it to the score table
+    // Provide a function that computes score and appends it to the score table
     /**
      * Handles the trivia form submission.
      * @param {Event} event - The submit event.
@@ -198,19 +198,31 @@ document.addEventListener("DOMContentLoaded", function () {
      * This stub prevents runtime errors; full implementation will come in later commits.
      */
     function displayScores() {
-        // Intentionally left minimal in Commit 2: persistence and rendering will come later
+        // Intentionally left minimal in Commit 3: persistence and rendering will come later
         // (Keeping this stub ensures the app initializes without errors.)
     }
 
-    // Add a non-breaking placeholder for the "New Player" action so the click listener works
+    // Implement the "New Player" flow so users can immediately try another round
     /**
-     * Begins a new player session (placeholder for now).
-     * This stub will be expanded to reset stored state and UI in a later commit.
+     * Begins a new player session by resetting UI state and fetching fresh questions.
      */
     function newPlayer() {
-        // For now, simply clear the username input so a different name can be entered
-        document.getElementById("username").value = "";
-        // We’ll add full reset behavior (including clearing saved state) in a later commit
+        // Get a reference to the username input so we can clear it
+        const usernameInput = document.getElementById("username");
+        // Clear any name previously entered so a new player can be typed
+        usernameInput.value = "";
+        // Re-enable the submit button so the next player can submit answers
+        document.getElementById("submit-game").disabled = false;
+        // Hide the "New Player" button again until after the next submission
+        newPlayerButton.classList.add("hidden");
+        // Clear the current questions from the container to avoid confusion
+        questionContainer.innerHTML = "";
+        // Show the loading skeleton while new questions are fetched
+        showLoading(true);
+        // Fetch a fresh set of questions to start a new round
+        fetchQuestions();
+        // Optionally, focus the name field to guide the new player’s next step
+        usernameInput.focus();
     }
 });
 // End of DOMContentLoaded handler
