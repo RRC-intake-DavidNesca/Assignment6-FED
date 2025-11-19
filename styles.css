@@ -1,124 +1,242 @@
+/* Define a utility class to hide elements from layout and visibility */
 .hidden {
+    /* Remove the element from the document flow and hide it */
     display: none;
 }
+/* End of .hidden rule */
 
+
+/* Target skeleton blocks inside the loading container to animate them */
 #loading-container .skeleton {
+    /* Apply the loading animation to create a pulsing effect */
     animation: loading 1.5s infinite ease-in-out;
 }
+/* End of #loading-container .skeleton rule */
 
+
+/* Define an unused shimmer animation that can slide a highlight across elements */
 @keyframes shimmer {
+    /* Set the initial background position off the left side */
     0% {
+        /* Position the gradient off-screen to the left */
         background-position: -100%;
     }
+    /* Set the final background position off the right side */
     100% {
+        /* Move the gradient fully across to the right */
         background-position: 100%;
     }
 }
+/* End of @keyframes shimmer definition */
 
+
+/* Define the base skeleton block styling used for loading placeholders */
 .skeleton {
+    /* Set a neutral gray background color for the skeleton block */
     background-color: #e0e0e0;
+    /* Slightly round the corners for a modern look */
     border-radius: 0.25rem;
+    /* Add vertical spacing between skeleton blocks */
     margin: 0.625rem 0;
 }
+/* End of .skeleton rule */
 
+
+/* Define the size of a skeleton representing an option area */
 .skeleton-option {
+    /* Make the skeleton tall enough to suggest a question/option block */
     height: 8em;
 }
+/* End of .skeleton-option rule */
 
+
+/* Create the pulsing loading animation used by skeleton blocks */
 @keyframes loading {
+    /* Start with the base gray */
     0% {
+        /* Use a slightly darker gray at the start */
         background-color: #e0e0e0;
     }
+    /* Lighten mid-way to simulate a pulse */
     50% {
+        /* Use a lighter gray in the middle of the animation */
         background-color: #f0f0f0;
     }
+    /* Return to the base gray at the end */
     100% {
+        /* Return to the original gray to complete the cycle */
         background-color: #e0e0e0;
     }
 }
+/* End of @keyframes loading definition */
 
+
+/* Set base typography and colors for the whole page */
 body {
+    /* Use the Roboto font with sensible fallbacks */
     font-family: "Roboto", sans-serif;
+    /* Apply a light gray background behind the main card */
     background-color: #f5f5f5;
+    /* Use a dark text color for readability on a light background */
     color: #333;
 }
+/* End of body rule */
 
+
+/* Constrain and style the main game container card */
 #game-container {
+    /* Limit the line length by constraining the maximum width */
     max-width: 50rem;
+    /* Center the container and add space from the top */
     margin: 1.25rem auto;
+    /* Add internal padding so content is not flush against edges */
     padding: 1.25rem;
+    /* Use a white background to create a card effect */
     background-color: white;
+    /* Add a soft drop shadow to lift the card from the page */
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
 }
+/* End of #game-container rule */
 
+
+/* Add spacing beneath the trivia form to separate it from the table */
 #trivia-form {
+    /* Create visual separation between the form and subsequent content */
     margin-bottom: 1.875rem;
 }
+/* End of #trivia-form rule */
 
+
+/* Style each dynamically inserted question block */
 #question-container > div {
+    /* Add internal padding around each question block */
     padding: 0.9375rem;
+    /* Add space below each question block */
     margin-bottom: 0.625rem;
+    /* Apply a light border to distinguish question blocks */
     border: 1px solid #ddd;
+    /* Slightly round the corners of the question blocks */
     border-radius: 0.3125rem;
+    /* Use a pale background to separate questions from the page */
     background-color: #fafafa;
 }
+/* End of #question-container > div rule */
 
+
+/* Style the paragraph that contains the question text */
 #question-container p {
+    /* Remove default top margin and add bottom spacing */
     margin: 0 0 0.625rem 0;
+    /* Make the question text slightly bolder for emphasis */
     font-weight: 500;
 }
+/* End of #question-container p rule */
 
+
+/* Ensure labels (answer choices) appear as block elements for easy tapping/clicking */
 label {
+    /* Stack labels vertically with slight spacing */
     display: block;
+    /* Add small vertical margins between labels */
     margin: 0.3125rem 0;
+    /* Indicate interactivity when hovering over labels */
     cursor: pointer;
 }
+/* End of label rule */
 
+
+/* Add spacing between radio inputs and their label text */
 input[type="radio"] {
+    /* Push the label text away from the small radio circle */
     margin-right: 0.625rem;
 }
+/* End of input[type="radio"] rule */
 
+
+/* Style the username text input field */
 #username {
+    /* Add internal padding to the text input for comfortable typing */
     padding: 0.625rem;
+    /* Apply a light border to the text input */
     border: 1px solid #ddd;
+    /* Slightly round the corners of the text input */
     border-radius: 0.3125rem;
+    /* Add space below the input before the button */
     margin-bottom: 0.9375rem;
 }
+/* End of #username rule */
 
+
+/* Apply consistent button styling across all buttons */
 button {
+    /* Use white text on colored buttons for contrast */
     color: white;
+    /* Remove default borders so our colors stand out */
     border: none;
+    /* Increase the hit area with comfortable padding */
     padding: 0.625rem 1.25rem;
+    /* Slightly round button corners */
     border-radius: 0.3125rem;
+    /* Show a pointer cursor to indicate the button is clickable */
     cursor: pointer;
+    /* Set a base font size for button labels */
     font-size: 1rem;
 }
+/* End of button rule */
 
+
+/* Set the primary color for the submit/finish button */
 #submit-game {
+    /* Use a purple background for the primary action */
     background-color: #6200ea;
 }
+/* End of #submit-game rule */
 
+
+/* Slightly darken the submit button on hover for feedback */
 #submit-game:hover {
+    /* Apply a darker purple when hovered */
     background-color: #3700b3;
 }
+/* End of #submit-game:hover rule */
 
+
+/* Set the color for the “New Player” button */
 #new-player {
+    /* Use a red background to differentiate this action */
     background-color: #ff0000;
 }
+/* End of #new-player rule */
 
+
+/* Darken the “New Player” button on hover for interactive feedback */
 #new-player:hover {
+    /* Apply a slightly darker red on hover */
     background-color: #e50000;
 }
+/* End of #new-player:hover rule */
 
+
+/* Style the score table that lists saved results */
 #score-table {
+    /* Make the table span the full width of the container */
     width: 100%;
+    /* Collapse borders so adjacent cells share borders */
     border-collapse: collapse;
+    /* Add space above the table to separate it from the form */
     margin-top: 1.25rem;
 }
+/* End of #score-table rule */
 
+
+/* Style the header and data cells for readability */
 #score-table th,
 #score-table td {
+    /* Draw a light border around each cell */
     border: 1px solid #ddd;
+    /* Add cell padding for comfortable reading */
     padding: 0.75rem;
+    /* Align text to the left for consistency */
     text-align: left;
 }
+/* End of #score-table th, #score-table td rule */

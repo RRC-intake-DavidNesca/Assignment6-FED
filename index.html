@@ -1,48 +1,81 @@
+<!-- Declare the HTML5 doctype so the browser uses standards mode -->
 <!DOCTYPE html>
+<!-- Open the root html element and set the language to English -->
 <html lang="en">
+    <!-- Open the document head where metadata and resource links live -->
     <head>
+        <!-- Specify the character encoding so text renders correctly -->
         <meta charset="UTF-8" />
+        <!-- Set the page title that appears in the browser tab -->
         <title>Trivia Game</title>
+        <!-- Link the external stylesheet that controls page appearance -->
         <link rel="stylesheet" href="styles.css" />
     </head>
+    <!-- Open the document body where visible content and scripts go -->
     <body>
+        <!-- Create a centered container for the trivia game UI -->
         <div id="game-container">
+            <!-- Open the form element that will contain questions and submission -->
             <form id="trivia-form">
                 <!-- Loading State / Skeleton Loader -->
+
+                <!-- Provide a container for the loading skeleton; hidden by default -->
                 <div id="loading-container" class="hidden">
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
+                    <!-- Show a skeleton block to represent a loading option -->
                     <div class="skeleton skeleton-option"></div>
                 </div>
 
+                <!-- Provide a container where fetched questions will be injected; hidden initially -->
                 <div id="question-container" class="hidden"></div>
+                <!-- Add an input for the player to enter their name -->
                 <input
                     type="text"
                     id="username"
                     placeholder="Enter your name"
                 />
+                <!-- Add a submit button that finishes the game and triggers scoring -->
                 <button type="submit" id="submit-game">Finish Game</button>
             </form>
+            <!-- Add a button to start a new player session; hidden initially -->
             <button id="new-player" class="hidden">New Player</button>
+            <!-- Provide a table to show player scores -->
             <table id="score-table">
+                <!-- Define the table header row and column labels -->
                 <thead>
+                    <!-- Create a row for header cells -->
                     <tr>
+                        <!-- Header cell for the player name -->
                         <th>Player</th>
+                        <!-- Header cell for the player score -->
                         <th>Score</th>
                     </tr>
                 </thead>
+                <!-- Define the table body where dynamic score rows will be inserted -->
                 <tbody>
                     <!-- Scores will be inserted here -->
                 </tbody>
             </table>
         </div>
+        <!-- Load the JavaScript file that adds interactivity and data logic -->
         <script src="script.js"></script>
     </body>
+    <!-- Close the root html element to end the document -->
 </html>
