@@ -1,5 +1,8 @@
 /**
  * Initializes the Trivia Game when the DOM is fully loaded.
+ * Commit 4: saved scores to localStorage and rendered scoreboard on load.
+ * Commit 5: added Clear Scores button/logic.
+ * Commit 6: auto-saves/prefills username and requires all questions answered before submit.
  */
 
 // Attach a listener so code runs after the initial HTML has been parsed.
@@ -10,18 +13,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const questionContainer = document.getElementById("question-container");
     // Cache a reference to the "New Player" button for starting a fresh round.
     const newPlayerButton = document.getElementById("new-player");
-    // Cache a reference to the "Clear Scores" button for wiping stored scores (Commit 5).
+    // Cache a reference to the "Clear Scores" button for wiping stored scores.
     const clearScoresButton = document.getElementById("clear-scores");
+    // Cache a reference to the username input for auto-save/prefill behavior (Commit 6).
+    const usernameInput = document.getElementById("username");
 
-    // Initialize the game by preparing UI and data.
-    // Leave username gating for a later commit if needed.
-    // checkUsername(); Uncomment once completed
+    // On load, prefill the username from localStorage if it exists (Commit 6).
+    checkUsername();
     // Trigger a fetch to load trivia questions from the API.
     fetchQuestions();
     // Populate the scores table from localStorage at startup.
     displayScores();
 
-    // Define a function that retrieves trivia questions from an external API and renders them.
+    // Listen for typing in the username field so we can persist it as the user types (Commit 6).
+    usernameInput.addEventListener("input", function () {
+        // Read the current value and trim whitespace
+        const value = (usernameInput.value || "").trim();
+        // If a non-empty value exists, save it to localStorage
+        if (value) {
+            // Persist the current user’s name for convenience on reload
+            localStorage.setItem("triviaCurrentUser", value);
+        } else {
+            // If the field is empty, remove the saved value to avoid stale data
+            localStorage.removeItem("triviaCurrentUser");
+        }
+    });
+
+    // Define a function that retrieves trivia questions from the API and displays them.
     /**
      * Fetches trivia questions from the API and displays them.
      */
@@ -62,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const questionsEl = document.getElementById("question-container");
         // If we are currently loading, show the skeleton and hide the questions.
         if (isLoading) {
-            // Ensure the loading skeleton is visible by removing the 'hidden' class.
+            // Ensure the loading skeleton is visible by removing the 'hidden' class (per modules: classList). :contentReference[oaicite:1]{index=1}
             loadingEl.classList.remove("hidden");
             // Ensure the questions are hidden during loading by adding the 'hidden' class.
             questionsEl.classList.add("hidden");
@@ -74,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Define a function that renders fetched questions into the DOM.
+    // Define a function that displays fetched trivia questions into the DOM.
     /**
      * Displays fetched trivia questions.
      * @param {Object[]} questions - Array of trivia questions.
@@ -137,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", handleFormSubmit);
     // Attach an event listener that will start a new player session when clicked.
     newPlayerButton.addEventListener("click", newPlayer);
-    // Attach an event listener that clears saved scores when clicked (Commit 5).
+    // Attach an event listener that clears saved scores when clicked.
     clearScoresButton.addEventListener("click", clearScores);
 
     // Define the handler that runs when the player submits the form.
@@ -153,8 +171,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const totalQuestions = document.querySelectorAll(
             "#question-container > div"
         ).length;
-        // Start a counter to track the number of correct answers.
+        // Start counters for correct answers and unanswered questions (Commit 6).
         let score = 0;
+        // Track unanswered so we can enforce completion before scoring
+        let unanswered = 0;
+
         // Loop through each question index to find the selected answer.
         for (let i = 0; i < totalQuestions; i++) {
             // Build a selector that targets the checked radio for this question.
@@ -165,7 +186,19 @@ document.addEventListener("DOMContentLoaded", function () {
             if (selected && selected.dataset && selected.dataset.correct === "true") {
                 // Increment the score for a correct selection.
                 score++;
+            // If there is no selection, increment unanswered count (Commit 6).
+            } else if (!selected) {
+                // Increase the count of unanswered questions.
+                unanswered++;
             }
+        }
+
+        // If any questions are unanswered, alert and abort (Commit 6).
+        if (unanswered > 0) {
+            // Show a simple message so the user knows to finish all items first.
+            alert("Please answer all questions before submitting the game.");
+            // Stop here—do not write to the table or to storage yet.
+            return;
         }
 
         // Read the player name from the username input field.
@@ -193,7 +226,9 @@ document.addEventListener("DOMContentLoaded", function () {
         tbody.appendChild(row);
 
         // Persist the score to localStorage so it survives page reloads (Module 6 topic).
-        saveScoreToStorage(playerName, score, totalQuestions); // Uses JSON.stringify/parse. :contentReference[oaicite:3]{index=3}
+        saveScoreToStorage(playerName, score, totalQuestions); // uses JSON.stringify/parse per notes. :contentReference[oaicite:2]{index=2}
+        // Persist the player name so it pre-fills next time (Commit 6).
+        localStorage.setItem("triviaCurrentUser", playerName);
         // Re-render the scoreboard from storage so it reflects the full persisted list.
         displayScores();
 
@@ -202,8 +237,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // Disable the submit button to prevent duplicate submissions for the same attempt.
         document.getElementById("submit-game").disabled = true;
     }
-
-    // ---- Storage helpers from prior commit (kept and used here) ----
 
     // Add a helper that safely reads the stored scores array from localStorage.
     function getScoresFromStorage() {
@@ -219,8 +252,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Convert the JSON text into a JavaScript array of score objects.
             return JSON.parse(raw);
         } catch (e) {
-            // Log a warning so corruption is visible in the console.
-            console.error("Invalid scores in storage:", e);
+            // Log a warning so corruption is visible in the console (per Debugging notes).
+            console.error("Invalid scores in storage:", e); // :contentReference[oaicite:3]{index=3}
             // Return an empty array to keep the app running.
             return [];
         }
@@ -229,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add a helper that writes the provided scores array back to localStorage.
     function setScoresInStorage(scoresArray) {
         // Convert the array of score objects into a JSON string.
-        const text = JSON.stringify(scoresArray); // Module notes cover JSON.stringify. :contentReference[oaicite:4]{index=4}
+        const text = JSON.stringify(scoresArray); // :contentReference[oaicite:4]{index=4}
         // Save the JSON string into localStorage under the "scores" key.
         localStorage.setItem("scores", text);
     }
@@ -239,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Read the current list from storage (or an empty array).
         const scores = getScoresFromStorage();
         // Create a new score record object with the player name and result.
-        const record = { name: name, correct: correct, total: total };
+        const record = { name: name, correct: correct, total: total, ts: Date.now() };
         // Append the new record to the in-memory array.
         scores.push(record);
         // Write the updated array back to storage.
@@ -275,15 +308,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Keep the New Player flow from the previous commit.
+    // Prefill the username from localStorage if available (Commit 6).
+    function checkUsername() {
+        // Read any saved name for the current user from localStorage.
+        const stored = localStorage.getItem("triviaCurrentUser");
+        // If a stored value exists, place it into the input field.
+        if (stored) {
+            // Prefill the username input with the stored value.
+            usernameInput.value = stored;
+        }
+    }
+
+    // Keep the New Player flow and clear the saved "current user" (Commit 6 adds removal).
     /**
      * Begins a new player session by resetting UI state and fetching fresh questions.
      */
     function newPlayer() {
-        // Get a reference to the username input to clear it.
-        const usernameInput = document.getElementById("username");
-        // Clear any previously entered name.
+        // Clear any previously entered name from the input.
         usernameInput.value = "";
+        // Remove the saved current user so the field is blank next time.
+        localStorage.removeItem("triviaCurrentUser");
         // Re-enable the submit button so the next submission is allowed.
         document.getElementById("submit-game").disabled = false;
         // Hide the New Player button again until after the next submission.
@@ -298,9 +342,9 @@ document.addEventListener("DOMContentLoaded", function () {
         usernameInput.focus();
     }
 
-    // Implement the Clear Scores behavior added in Commit 5.
+    // Implement the Clear Scores behavior (kept from Commit 5).
     function clearScores() {
-        // Ask the user for confirmation using the built-in confirm dialog (basic JS; not advanced).
+        // Ask the user for confirmation using the built-in confirm dialog.
         const ok = window.confirm("Clear all saved scores? This cannot be undone.");
         // If the user confirmed the action, proceed to wipe the scores.
         if (ok) {

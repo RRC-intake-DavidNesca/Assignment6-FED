@@ -200,7 +200,7 @@ button {
     text-align: left;
 }
 
-/* Style the Clear Scores button added in Commit 5 */
+/* Style the Clear Scores button added earlier */
 #clear-scores {
     /* Use a neutral dark gray to signal a data-management action */
     background-color: #444;
