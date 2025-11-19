@@ -214,7 +214,7 @@ button {
     background-color: #222;
 }
 
-/* Add a visual summary box for the final score (kept from earlier) */
+/* Add a visual summary box for the final score (Commit 7) */
 #result-summary {
     /* Add spacing above to separate it from the New Player button */
     margin-top: 0.75rem;
@@ -232,7 +232,7 @@ button {
     font-size: 1rem;
 }
 
-/* Highlight the correct answer label after submit (kept from earlier) */
+/* Highlight the correct answer label after submit (Commit 7) */
 label.correct {
     /* Use a subtle green background to indicate correctness */
     background-color: #e7f7e7;
@@ -244,7 +244,7 @@ label.correct {
     padding: 0.25rem 0.5rem;
 }
 
-/* Highlight the selected incorrect answer label after submit (kept from earlier) */
+/* Highlight the selected incorrect answer label after submit (Commit 7) */
 label.incorrect {
     /* Use a subtle red background to indicate an incorrect choice */
     background-color: #fdeaea;
@@ -256,19 +256,19 @@ label.incorrect {
     padding: 0.25rem 0.5rem;
 }
 
-/* Add layout and spacing for the scoreboard control row (kept from Commit 8) */
+/* Add layout and spacing for the scoreboard control row (Commit 8, extended in 10) */
 #table-controls {
     /* Separate the controls from the summary area above */
     margin-top: 1rem;
-    /* Use flex layout so label and select sit nicely in a row */
+    /* Use flex layout so label, select, and input sit nicely in a row */
     display: flex;
     /* Align items vertically centered within the row */
     align-items: center;
-    /* Add a small gap between label and select */
+    /* Add a small gap between controls */
     gap: 0.5rem;
 }
 
-/* Style the label inside the control row for readability (kept from Commit 8) */
+/* Style the labels inside the control row for readability */
 #table-controls label {
     /* Slightly emphasize the label text */
     font-weight: 500;
@@ -276,7 +276,7 @@ label.incorrect {
     color: #333;
 }
 
-/* Style the select input to match the page (kept from Commit 8) */
+/* Style the select input to match the page (Commit 8) */
 #table-controls select {
     /* Add comfortable padding inside the control */
     padding: 0.4rem 0.6rem;
@@ -292,7 +292,23 @@ label.incorrect {
     color: #333;
 }
 
-/* Highlight unanswered question blocks (kept from Commit 7) */
+/* Style the filter text input to align visually with the select (Commit 10) */
+#table-controls input[type="text"] {
+    /* Add similar padding to the select for visual consistency */
+    padding: 0.4rem 0.6rem;
+    /* Use the same subtle border style */
+    border: 1px solid #ddd;
+    /* Match border radius to other controls */
+    border-radius: 0.3125rem;
+    /* Keep the font size consistent */
+    font-size: 1rem;
+    /* Use a white background */
+    background-color: #fff;
+    /* Use standard text color */
+    color: #333;
+}
+
+/* Highlight unanswered question blocks (Commit 7) */
 #question-container > div.invalid {
     /* Change the border color to a warning red */
     border-color: #d93025;
@@ -300,7 +316,7 @@ label.incorrect {
     background-color: #fff5f5;
 }
 
-/* Top score summary box (added in corrected Commit 9) */
+/* Top score summary box (Commit 9) */
 #top-score {
     /* Space above the summary box */
     margin-top: 0.75rem;
@@ -318,7 +334,25 @@ label.incorrect {
     font-weight: 600;
 }
 
-/* Highlight entire top rows in the table (added in corrected Commit 9) */
+/* Average summary box that mirrors the top-score style (Commit 10) */
+#avg-score {
+    /* Space above the average box */
+    margin-top: 0.5rem;
+    /* Inner padding for readability */
+    padding: 0.5rem 0.75rem;
+    /* Use a very light neutral background */
+    background-color: #f6f7fb;
+    /* Light border to match top-score styling */
+    border: 1px solid #dde3f0;
+    /* Rounded corners for consistency */
+    border-radius: 0.3125rem;
+    /* Darker text for readability */
+    color: #2d3e50;
+    /* Slight emphasis on text weight */
+    font-weight: 600;
+}
+
+/* Highlight entire top rows in the table (Commit 9) */
 #score-table tr.top td {
     /* Very light green to indicate best results */
     background-color: #f1fbea;

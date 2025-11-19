@@ -75,10 +75,18 @@
                     <!-- Option to sort by lowest score -->
                     <option value="lowest">Lowest score</option>
                 </select>
+
+                <!-- Label the filter input for accessibility (Commit 10) -->
+                <label for="filter-player">Filter:</label>
+                <!-- Provide a text input to filter rows by player name (Commit 10) -->
+                <input type="text" id="filter-player" placeholder="Filter by player" />
             </div>
 
             <!-- Provide a compact Top Score summary (Commit 9) -->
             <div id="top-score" class="hidden"></div>
+
+            <!-- Provide a compact Average summary that reflects the current view (Commit 10) -->
+            <div id="avg-score" class="hidden"></div>
 
             <!-- Provide a table to display stored player scores -->
             <table id="score-table">
