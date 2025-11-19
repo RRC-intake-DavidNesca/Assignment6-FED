@@ -139,6 +139,26 @@ input[type="radio"] {
     margin-bottom: 0.9375rem;
 }
 
+/* Layout row for Remember/Forget controls (Commit 10) */
+#remember-row {
+    /* Place items in a row */
+    display: flex;
+    /* Center vertically with the checkbox and button */
+    align-items: center;
+    /* Add space between items */
+    gap: 0.5rem;
+    /* Add a little space under the row */
+    margin-bottom: 0.75rem;
+}
+
+/* Keep the remember label readable inline */
+.remember-label {
+    /* Do not force this label to full-width block */
+    display: inline-block;
+    /* Slight emphasis */
+    font-weight: 500;
+}
+
 /* Provide consistent base styles for all buttons */
 button {
     /* Use white text for strong contrast */
@@ -153,6 +173,14 @@ button {
     cursor: pointer;
     /* Use a readable base font size */
     font-size: 1rem;
+}
+
+/* Visually indicate disabled buttons */
+button:disabled {
+    /* Reduce opacity so the button looks disabled */
+    opacity: 0.6;
+    /* Show a not-allowed cursor on hover */
+    cursor: not-allowed;
 }
 
 /* Style the primary submit (Finish Game) button */
@@ -179,6 +207,18 @@ button {
     background-color: #e50000;
 }
 
+/* Neutral style for Forget Me (privacy action) */
+#forget-me {
+    /* Use a neutral gray for data-privacy related action */
+    background-color: #6b6b6b;
+}
+
+/* Darken the Forget Me button on hover */
+#forget-me:hover {
+    /* Slightly darker shade on hover */
+    background-color: #4f4f4f;
+}
+
 /* Style the score table so it uses the full width and clean borders */
 #score-table {
     /* Stretch the table to the container width */
@@ -200,12 +240,20 @@ button {
     text-align: left;
 }
 
+/* Style a placeholder row that explains there is no data to show */
+#score-table tr.placeholder td {
+    /* Use a neutral text color */
+    color: #666;
+    /* Make the message slightly italic to distinguish it */
+    font-style: italic;
+}
+
 /* Style the Clear Scores button added earlier */
 #clear-scores {
     /* Use a neutral dark gray to signal a data-management action */
     background-color: #444;
     /* Add space above to separate it from the table */
-    margin-top: 0.75rem;
+    margin-top: 1.25rem;
 }
 
 /* Darken the Clear Scores button on hover for feedback */
@@ -256,19 +304,19 @@ label.incorrect {
     padding: 0.25rem 0.5rem;
 }
 
-/* Add layout and spacing for the scoreboard control row (Commit 8, extended in 10) */
+/* Add layout and spacing for the scoreboard control row (Commit 8) */
 #table-controls {
     /* Separate the controls from the summary area above */
     margin-top: 1rem;
-    /* Use flex layout so label, select, and input sit nicely in a row */
+    /* Use flex layout so label and select sit nicely in a row */
     display: flex;
     /* Align items vertically centered within the row */
     align-items: center;
-    /* Add a small gap between controls */
+    /* Add a small gap between label and select */
     gap: 0.5rem;
 }
 
-/* Style the labels inside the control row for readability */
+/* Style the label inside the control row for readability (Commit 8) */
 #table-controls label {
     /* Slightly emphasize the label text */
     font-weight: 500;
@@ -316,7 +364,7 @@ label.incorrect {
     background-color: #fff5f5;
 }
 
-/* Top score summary box (Commit 9) */
+/* Top score summary box (Commit 9, respects filter in Commit 10) */
 #top-score {
     /* Space above the summary box */
     margin-top: 0.75rem;
@@ -334,13 +382,13 @@ label.incorrect {
     font-weight: 600;
 }
 
-/* Average summary box that mirrors the top-score style (Commit 10) */
+/* Average summary box (Commit 10) */
 #avg-score {
     /* Space above the average box */
     margin-top: 0.5rem;
     /* Inner padding for readability */
     padding: 0.5rem 0.75rem;
-    /* Use a very light neutral background */
+    /* Very light neutral background */
     background-color: #f6f7fb;
     /* Light border to match top-score styling */
     border: 1px solid #dde3f0;
