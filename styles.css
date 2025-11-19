@@ -214,7 +214,7 @@ button {
     background-color: #222;
 }
 
-/* Add a visual summary box for the final score */
+/* Add a visual summary box for the final score (kept from earlier) */
 #result-summary {
     /* Add spacing above to separate it from the New Player button */
     margin-top: 0.75rem;
@@ -232,7 +232,7 @@ button {
     font-size: 1rem;
 }
 
-/* Highlight the correct answer label after submit */
+/* Highlight the correct answer label after submit (kept from earlier) */
 label.correct {
     /* Use a subtle green background to indicate correctness */
     background-color: #e7f7e7;
@@ -244,7 +244,7 @@ label.correct {
     padding: 0.25rem 0.5rem;
 }
 
-/* Highlight the selected incorrect answer label after submit */
+/* Highlight the selected incorrect answer label after submit (kept from earlier) */
 label.incorrect {
     /* Use a subtle red background to indicate an incorrect choice */
     background-color: #fdeaea;
@@ -256,7 +256,7 @@ label.incorrect {
     padding: 0.25rem 0.5rem;
 }
 
-/* Add layout and spacing for the scoreboard control row (Commit 8) */
+/* Add layout and spacing for the scoreboard control row (kept from Commit 8) */
 #table-controls {
     /* Separate the controls from the summary area above */
     margin-top: 1rem;
@@ -268,7 +268,7 @@ label.incorrect {
     gap: 0.5rem;
 }
 
-/* Style the label inside the control row for readability */
+/* Style the label inside the control row for readability (kept from Commit 8) */
 #table-controls label {
     /* Slightly emphasize the label text */
     font-weight: 500;
@@ -276,7 +276,7 @@ label.incorrect {
     color: #333;
 }
 
-/* Style the select input for a clean look consistent with the page */
+/* Style the select input to match the page (kept from Commit 8) */
 #table-controls select {
     /* Add comfortable padding inside the control */
     padding: 0.4rem 0.6rem;
@@ -290,4 +290,36 @@ label.incorrect {
     background-color: #fff;
     /* Use a standard text color */
     color: #333;
+}
+
+/* Highlight unanswered question blocks (kept from Commit 7) */
+#question-container > div.invalid {
+    /* Change the border color to a warning red */
+    border-color: #d93025;
+    /* Add a subtle tinted background for visibility */
+    background-color: #fff5f5;
+}
+
+/* Top score summary box (added in corrected Commit 9) */
+#top-score {
+    /* Space above the summary box */
+    margin-top: 0.75rem;
+    /* Inner padding for readability */
+    padding: 0.5rem 0.75rem;
+    /* Soft blue background to distinguish summary */
+    background-color: #e9f3ff;
+    /* Light border for separation */
+    border: 1px solid #cfe3ff;
+    /* Rounded corners for cohesion with card */
+    border-radius: 0.3125rem;
+    /* Darker text color for contrast */
+    color: #183b5b;
+    /* Slightly bolder text */
+    font-weight: 600;
+}
+
+/* Highlight entire top rows in the table (added in corrected Commit 9) */
+#score-table tr.top td {
+    /* Very light green to indicate best results */
+    background-color: #f1fbea;
 }

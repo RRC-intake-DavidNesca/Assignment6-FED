@@ -19,51 +19,50 @@
         <div id="game-container">
             <!-- Create a form to wrap the questions and submission controls -->
             <form id="trivia-form">
-                <!-- Provide a container for the skeleton loader while questions fetch -->
-                <!-- Loading State / Skeleton Loader -->
+                <!-- Loading State / Skeleton Loader container shown during fetch -->
                 <div id="loading-container" class="hidden">
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add a skeleton block to suggest loading content -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
-                    <!-- Add a skeleton bar to simulate a loading option -->
+                    <!-- Add another skeleton block -->
                     <div class="skeleton skeleton-option"></div>
                 </div>
 
                 <!-- Provide an initially hidden container where fetched questions will render -->
                 <div id="question-container" class="hidden"></div>
-                <!-- Provide a text input for the player to enter their name -->
-                <input
-                    type="text"
-                    id="username"
-                    placeholder="Enter your name"
-                />
+
+                <!-- Explain that the next line renders the username input field -->
+                <!-- Provide a text input for the player to enter their name (all attributes on one line to avoid comments inside tags) -->
+                <input type="text" id="username" placeholder="Enter your name" />
+
                 <!-- Provide the button to finish the game and submit answers -->
                 <button type="submit" id="submit-game">Finish Game</button>
             </form>
+
             <!-- Provide a button to start over with a new player (initially hidden) -->
             <button id="new-player" class="hidden">New Player</button>
 
-            <!-- Add a summary box that will show the final score after submission -->
+            <!-- Provide a summary area for the final score after submission (Commit 7) -->
             <div id="result-summary" class="hidden"></div>
 
-            <!-- Add a small control row for scoreboard actions (Commit 8) -->
+            <!-- Provide a small control row for scoreboard sorting (Commit 8) -->
             <div id="table-controls">
-                <!-- Label the select control for accessibility and clarity -->
+                <!-- Label the select for clarity -->
                 <label for="sort-scores">Sort Scores:</label>
                 <!-- Provide a select menu to choose the scoreboard sort mode -->
                 <select id="sort-scores">
@@ -77,6 +76,9 @@
                     <option value="lowest">Lowest score</option>
                 </select>
             </div>
+
+            <!-- Provide a compact Top Score summary (Commit 9) -->
+            <div id="top-score" class="hidden"></div>
 
             <!-- Provide a table to display stored player scores -->
             <table id="score-table">
@@ -94,9 +96,11 @@
                     <!-- Scores will be inserted here -->
                 </tbody>
             </table>
+
             <!-- Add a button that allows clearing all saved scores from localStorage -->
             <button id="clear-scores">Clear Scores</button>
         </div>
+
         <!-- Load the external JavaScript file that controls the game logic -->
         <script src="script.js"></script>
     </body>
