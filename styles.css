@@ -13,15 +13,9 @@
 /* Define a shimmer animation block (kept for potential use) */
 @keyframes shimmer {
     /* Start with the background positioned left */
-    0% {
-        /* Place the background off the left side */
-        background-position: -100%;
-    }
+    0% { background-position: -100%; }
     /* End with the background positioned right */
-    100% {
-        /* Move the background across to the right side */
-        background-position: 100%;
-    }
+    100% { background-position: 100%; }
 }
 
 /* Base skeleton styling for loading placeholders */
@@ -43,20 +37,11 @@
 /* Define the pulsing color animation for the skeleton blocks */
 @keyframes loading {
     /* Start with the base gray tone */
-    0% {
-        /* Use the base gray color */
-        background-color: #e0e0e0;
-    }
+    0% { background-color: #e0e0e0; }
     /* Lighten mid‑animation for a pulse effect */
-    50% {
-        /* Use a lighter gray to simulate motion */
-        background-color: #f0f0f0;
-    }
+    50% { background-color: #f0f0f0; }
     /* Return to the base gray at the end of the cycle */
-    100% {
-        /* Reset to the initial gray color */
-        background-color: #e0e0e0;
-    }
+    100% { background-color: #e0e0e0; }
 }
 
 /* Set base typography and colors for the whole page */
@@ -136,10 +121,10 @@ input[type="radio"] {
     /* Slightly round the input’s corners */
     border-radius: 0.3125rem;
     /* Add space below the input before the button */
-    margin-bottom: 0.9375rem;
+    margin-bottom: 0.5rem;
 }
 
-/* Layout row for Remember/Forget controls (Commit 10) */
+/* Layout row for Remember/Forget controls */
 #remember-row {
     /* Place items in a row */
     display: flex;
@@ -148,12 +133,12 @@ input[type="radio"] {
     /* Add space between items */
     gap: 0.5rem;
     /* Add a little space under the row */
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.9375rem;
 }
 
 /* Keep the remember label readable inline */
 .remember-label {
-    /* Do not force this label to full-width block */
+    /* Inline with the checkbox */
     display: inline-block;
     /* Slight emphasis */
     font-weight: 500;
@@ -175,11 +160,11 @@ button {
     font-size: 1rem;
 }
 
-/* Visually indicate disabled buttons */
+/* Provide a subtle disabled style for any disabled button */
 button:disabled {
-    /* Reduce opacity so the button looks disabled */
+    /* Reduce opacity to signal disabled state */
     opacity: 0.6;
-    /* Show a not-allowed cursor on hover */
+    /* Change cursor to indicate it cannot be clicked */
     cursor: not-allowed;
 }
 
@@ -240,20 +225,22 @@ button:disabled {
     text-align: left;
 }
 
-/* Style a placeholder row that explains there is no data to show */
-#score-table tr.placeholder td {
-    /* Use a neutral text color */
+/* Center and de‑emphasize the empty-state row */
+#score-table tr.empty td {
+    /* Center the placeholder message across the table */
+    text-align: center;
+    /* Use a slightly muted color */
     color: #666;
-    /* Make the message slightly italic to distinguish it */
+    /* Use italics to make it look informational */
     font-style: italic;
 }
 
-/* Style the Clear Scores button added earlier */
+/* Style the Clear Scores button */
 #clear-scores {
     /* Use a neutral dark gray to signal a data-management action */
     background-color: #444;
     /* Add space above to separate it from the table */
-    margin-top: 1.25rem;
+    margin-top: 0.75rem;
 }
 
 /* Darken the Clear Scores button on hover for feedback */
@@ -262,7 +249,7 @@ button:disabled {
     background-color: #222;
 }
 
-/* Add a visual summary box for the final score (Commit 7) */
+/* Add a visual summary box for the final score */
 #result-summary {
     /* Add spacing above to separate it from the New Player button */
     margin-top: 0.75rem;
@@ -280,7 +267,7 @@ button:disabled {
     font-size: 1rem;
 }
 
-/* Highlight the correct answer label after submit (Commit 7) */
+/* Highlight the correct answer label after submit */
 label.correct {
     /* Use a subtle green background to indicate correctness */
     background-color: #e7f7e7;
@@ -292,7 +279,7 @@ label.correct {
     padding: 0.25rem 0.5rem;
 }
 
-/* Highlight the selected incorrect answer label after submit (Commit 7) */
+/* Highlight the selected incorrect answer label after submit */
 label.incorrect {
     /* Use a subtle red background to indicate an incorrect choice */
     background-color: #fdeaea;
@@ -304,59 +291,7 @@ label.incorrect {
     padding: 0.25rem 0.5rem;
 }
 
-/* Add layout and spacing for the scoreboard control row (Commit 8) */
-#table-controls {
-    /* Separate the controls from the summary area above */
-    margin-top: 1rem;
-    /* Use flex layout so label and select sit nicely in a row */
-    display: flex;
-    /* Align items vertically centered within the row */
-    align-items: center;
-    /* Add a small gap between label and select */
-    gap: 0.5rem;
-}
-
-/* Style the label inside the control row for readability (Commit 8) */
-#table-controls label {
-    /* Slightly emphasize the label text */
-    font-weight: 500;
-    /* Use normal text color for consistency with body */
-    color: #333;
-}
-
-/* Style the select input to match the page (Commit 8) */
-#table-controls select {
-    /* Add comfortable padding inside the control */
-    padding: 0.4rem 0.6rem;
-    /* Match the input’s subtle border style */
-    border: 1px solid #ddd;
-    /* Slightly round the corners for consistency with other elements */
-    border-radius: 0.3125rem;
-    /* Set a readable font size */
-    font-size: 1rem;
-    /* Use a white background to match inputs */
-    background-color: #fff;
-    /* Use a standard text color */
-    color: #333;
-}
-
-/* Style the filter text input to align visually with the select (Commit 10) */
-#table-controls input[type="text"] {
-    /* Add similar padding to the select for visual consistency */
-    padding: 0.4rem 0.6rem;
-    /* Use the same subtle border style */
-    border: 1px solid #ddd;
-    /* Match border radius to other controls */
-    border-radius: 0.3125rem;
-    /* Keep the font size consistent */
-    font-size: 1rem;
-    /* Use a white background */
-    background-color: #fff;
-    /* Use standard text color */
-    color: #333;
-}
-
-/* Highlight unanswered question blocks (Commit 7) */
+/* Highlight unanswered question blocks */
 #question-container > div.invalid {
     /* Change the border color to a warning red */
     border-color: #d93025;
@@ -364,7 +299,7 @@ label.incorrect {
     background-color: #fff5f5;
 }
 
-/* Top score summary box (Commit 9, respects filter in Commit 10) */
+/* Top score summary box */
 #top-score {
     /* Space above the summary box */
     margin-top: 0.75rem;
@@ -380,28 +315,4 @@ label.incorrect {
     color: #183b5b;
     /* Slightly bolder text */
     font-weight: 600;
-}
-
-/* Average summary box (Commit 10) */
-#avg-score {
-    /* Space above the average box */
-    margin-top: 0.5rem;
-    /* Inner padding for readability */
-    padding: 0.5rem 0.75rem;
-    /* Very light neutral background */
-    background-color: #f6f7fb;
-    /* Light border to match top-score styling */
-    border: 1px solid #dde3f0;
-    /* Rounded corners for consistency */
-    border-radius: 0.3125rem;
-    /* Darker text for readability */
-    color: #2d3e50;
-    /* Slight emphasis on text weight */
-    font-weight: 600;
-}
-
-/* Highlight entire top rows in the table (Commit 9) */
-#score-table tr.top td {
-    /* Very light green to indicate best results */
-    background-color: #f1fbea;
 }

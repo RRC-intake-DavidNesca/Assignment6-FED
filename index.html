@@ -50,6 +50,16 @@
                 <!-- Provide a text input for the player to enter their name (all attributes on one line to avoid comments inside tags) -->
                 <input type="text" id="username" placeholder="Enter your name" />
 
+                <!-- Add a small privacy row so storing the name is consent‑based -->
+                <div id="remember-row">
+                    <!-- Provide a label describing the opt‑in checkbox -->
+                    <label class="remember-label" for="remember-me">Remember my name on this device</label>
+                    <!-- Provide the checkbox that toggles whether we store the name -->
+                    <input type="checkbox" id="remember-me" />
+                    <!-- Provide a button that clears any stored name and hides itself -->
+                    <button type="button" id="forget-me" class="hidden">Forget me</button>
+                </div>
+
                 <!-- Provide the button to finish the game and submit answers -->
                 <button type="submit" id="submit-game">Finish Game</button>
             </form>
@@ -57,10 +67,10 @@
             <!-- Provide a button to start over with a new player (initially hidden) -->
             <button id="new-player" class="hidden">New Player</button>
 
-            <!-- Provide a summary area for the final score after submission (Commit 7) -->
-            <div id="result-summary" class="hidden"></div>
+            <!-- Provide a summary area for the final score; aria-live announces results to screen readers -->
+            <div id="result-summary" class="hidden" aria-live="polite"></div>
 
-            <!-- Provide a small control row for scoreboard sorting (Commit 8) -->
+            <!-- Provide a small control row for scoreboard sorting -->
             <div id="table-controls">
                 <!-- Label the select for clarity -->
                 <label for="sort-scores">Sort Scores:</label>
@@ -75,18 +85,10 @@
                     <!-- Option to sort by lowest score -->
                     <option value="lowest">Lowest score</option>
                 </select>
-
-                <!-- Label the filter input for accessibility (Commit 10) -->
-                <label for="filter-player">Filter:</label>
-                <!-- Provide a text input to filter rows by player name (Commit 10) -->
-                <input type="text" id="filter-player" placeholder="Filter by player" />
             </div>
 
-            <!-- Provide a compact Top Score summary (Commit 9) -->
+            <!-- Provide a compact Top Score summary -->
             <div id="top-score" class="hidden"></div>
-
-            <!-- Provide a compact Average summary that reflects the current view (Commit 10) -->
-            <div id="avg-score" class="hidden"></div>
 
             <!-- Provide a table to display stored player scores -->
             <table id="score-table">
@@ -97,6 +99,8 @@
                         <th>Player</th>
                         <!-- Column heading for score -->
                         <th>Score</th>
+                        <!-- Column heading for attempt date/time -->
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <!-- Define the table body where score rows will be inserted dynamically -->
