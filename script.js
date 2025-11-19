@@ -2,95 +2,120 @@
  * Initializes the Trivia Game
  */
 
-// This line runs our setup after the initial HTML has been parsed
+// Attach a listener so code runs after the initial HTML has been parsed.
 document.addEventListener("DOMContentLoaded", function () {
-    // This line caches the trivia form element to manage submission
+    // Cache a reference to the trivia form for submission handling.
     const form = document.getElementById("trivia-form");
-    // This line caches the container where questions are rendered
+    // Cache the container where questions will be injected dynamically.
     const questionContainer = document.getElementById("question-container");
-    // This line caches the New Player button to reset for another round
+    // Cache a reference to the "New Player" button for starting a fresh round.
     const newPlayerButton = document.getElementById("new-player");
-    // This line caches the Clear Scores button to wipe score history only
+    // Cache a reference to the "Clear Scores" button for wiping stored scores.
     const clearScoresButton = document.getElementById("clear-scores");
-    // This line caches the Clear All Data button to wipe scores and saved username
-    const clearAllButton = document.getElementById("clear-all");
+    // Cache a reference to the username input for auto-save/prefill behavior.
+    const usernameInput = document.getElementById("username");
+    // Cache a reference to the result summary box shown after submission.
+    const resultSummary = document.getElementById("result-summary");
+    // Cache a reference to the sort select control for the scoreboard (Commit 8).
+    const sortSelect = document.getElementById("sort-scores");
 
-    // This line pre-fills the username from localStorage if previously saved
-    checkUsername(); // Uses DOM + localStorage per Module 6. :contentReference[oaicite:2]{index=2}
-    // This line fetches a fresh set of questions from the trivia API
+    // On load, prefill the username from localStorage if it exists.
+    checkUsername();
+    // On load, apply the saved sort preference to the select control (Commit 8).
+    applySavedSortPreference();
+    // Fetch a fresh set of questions to display to the player.
     fetchQuestions();
-    // This line renders any existing scores from localStorage into the table
+    // Render any previously saved scores from localStorage at startup (sorted).
     displayScores();
 
-    // This JSDoc explains the function that retrieves and displays questions
+    // Listen for typing in the username field so we can persist it as the user types.
+    usernameInput.addEventListener("input", function () {
+        // Read the current value and trim whitespace.
+        const value = (usernameInput.value || "").trim();
+        // If a non-empty value exists, save it to localStorage.
+        if (value) {
+            // Persist the current user’s name for convenience on reload.
+            localStorage.setItem("triviaCurrentUser", value);
+        } else {
+            // If the field is empty, remove the saved value to avoid stale data.
+            localStorage.removeItem("triviaCurrentUser");
+        }
+    });
+
+    // Listen for changes to the sort select to update preference and re-render (Commit 8).
+    sortSelect.addEventListener("change", function () {
+        // Store the newly selected sort mode under a dedicated key.
+        localStorage.setItem("scoreSort", sortSelect.value);
+        // Re-render the scoreboard using the updated sort preference.
+        displayScores();
+    });
+
+    // Define a function that retrieves trivia questions from the API and displays them.
     /**
      * Fetches trivia questions from the API and displays them.
      */
-    // This function shows the loader, fetches JSON, renders questions, and hides the loader
     function fetchQuestions() {
-        // This line shows the skeleton loader while the network request is in flight
+        // Show the loading state while the API request is in progress.
         showLoading(true); // Show loading state
 
-        // This line calls the Open Trivia DB API for 10 multiple-choice questions
+        // Use the Fetch API to request 10 multiple-choice questions.
         fetch("https://opentdb.com/api.php?amount=10&type=multiple")
-            // This line parses the JSON body of the response
+            // Convert the network response into JSON so we can access the results array.
             .then((response) => response.json())
-            // This line handles the parsed response data
+            // Handle the parsed JSON data and display the questions.
             .then((data) => {
-                // This line renders all returned questions into the DOM
+                // Render the returned questions into the question container.
                 displayQuestions(data.results);
-                // This line hides the loader and reveals the questions
+                // Hide the loading state because data is ready.
                 showLoading(false); // Hide loading state
             })
-            // This line handles network or parsing errors gracefully
+            // Catch any error from the network request or JSON parsing.
             .catch((error) => {
-                // This line logs the error for debugging
+                // Log the error so it is easier to debug.
                 console.error("Error fetching questions:", error);
-                // This line hides the loader even when an error occurs
+                // Hide the loading state if an error occurs.
                 showLoading(false); // Hide loading state on error
             });
     }
 
-    // This JSDoc describes the loader visibility toggling helper
+    // Define a function that toggles the visibility of the loader and question container.
     /**
      * Toggles the display of the loading state and question container.
      *
      * @param {boolean} isLoading - Indicates whether the loading state should be shown.
      */
-    // This function adds/removes the 'hidden' class on loader and questions
     function showLoading(isLoading) {
-        // This line selects the loader container
+        // Get a reference to the loading container element.
         const loadingEl = document.getElementById("loading-container");
-        // This line selects the questions container
+        // Get a reference to the question container element.
         const questionsEl = document.getElementById("question-container");
-        // This condition toggles the two areas based on loading state
+        // If we are currently loading, show the skeleton and hide the questions.
         if (isLoading) {
-            // This line reveals the loader by removing 'hidden'
+            // Ensure the loading skeleton is visible by removing the 'hidden' class (per DOM/classList patterns). :contentReference[oaicite:3]{index=3}
             loadingEl.classList.remove("hidden");
-            // This line hides questions by adding 'hidden'
+            // Ensure the questions are hidden during loading by adding the 'hidden' class.
             questionsEl.classList.add("hidden");
         } else {
-            // This line hides the loader by adding 'hidden'
+            // Hide the loading skeleton by adding the 'hidden' class.
             loadingEl.classList.add("hidden");
-            // This line reveals questions by removing 'hidden'
+            // Reveal the questions by removing the 'hidden' class.
             questionsEl.classList.remove("hidden");
         }
     }
 
-    // This JSDoc describes rendering behavior for fetched questions
+    // Define a function that displays fetched trivia questions into the DOM.
     /**
      * Displays fetched trivia questions.
      * @param {Object[]} questions - Array of trivia questions.
      */
-    // This function clears prior content and inserts blocks for each question
     function displayQuestions(questions) {
-        // This line clears any previously rendered questions
+        // Clear any previously rendered questions so we start fresh.
         questionContainer.innerHTML = ""; // Clear existing questions
-        // This line loops through the questions and index to build markup
+        // Loop over the array of question objects and render each one.
         questions.forEach((question, index) => {
-            // This line creates a wrapper for one question plus its options
+            // Create a container for the current question block.
             const questionDiv = document.createElement("div");
-            // This line sets HTML for the question prompt and its answer options
+            // Build the inner HTML for the question text and its answer options.
             questionDiv.innerHTML = `
                 <p>${question.question}</p>
                 ${createAnswerOptions(
@@ -99,12 +124,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     index
                 )}
             `;
-            // This line appends the question block into the container
+            // Append the question block to the main question container in the form.
             questionContainer.appendChild(questionDiv);
         });
     }
 
-    // This JSDoc describes the answer-option markup generator
+    // Define a helper that produces the markup for multiple-choice answers.
     /**
      * Creates HTML for answer options.
      * @param {string} correctAnswer - The correct answer for the question.
@@ -112,17 +137,16 @@ document.addEventListener("DOMContentLoaded", function () {
      * @param {number} questionIndex - The index of the current question.
      * @returns {string} HTML string of answer options.
      */
-    // This function merges/shuffles answers and returns radio inputs with labels
     function createAnswerOptions(
         correctAnswer,
         incorrectAnswers,
         questionIndex
     ) {
-        // This line merges correct and incorrect arrays and shuffles them
+        // Combine the correct answer and incorrect answers into one array and shuffle them.
         const allAnswers = [correctAnswer, ...incorrectAnswers].sort(
             () => Math.random() - 0.5
         );
-        // This line returns a single HTML string containing labeled radio inputs
+        // Return a string of label+radio inputs, marking the correct answer with a data attribute.
         return allAnswers
             .map(
                 (answer) => `
@@ -134,261 +158,296 @@ document.addEventListener("DOMContentLoaded", function () {
             </label>
         `
             )
-            // This line joins the array of option snippets
+            // Join the array of option strings into one HTML string.
             .join("");
     }
 
-    // This line wires up the form submission handler
+    // Attach an event listener that will handle the form submission (finish game).
     form.addEventListener("submit", handleFormSubmit);
-    // This line wires up the Clear Scores feature
-    clearScoresButton.addEventListener("click", clearScores);
-    // This line wires up the Clear All Data feature
-    clearAllButton.addEventListener("click", clearAllData);
-    // This line wires up the New Player feature
+    // Attach an event listener that will start a new player session when clicked.
     newPlayerButton.addEventListener("click", newPlayer);
+    // Attach an event listener that clears saved scores when clicked.
+    clearScoresButton.addEventListener("click", clearScores);
 
-    // This JSDoc documents the submit handler logic
+    // Define the handler that runs when the player submits the form.
     /**
      * Handles the trivia form submission.
      * @param {Event} event - The submit event.
      */
-    // This function validates completion, scores answers, saves, and updates UI
     function handleFormSubmit(event) {
-        // This line prevents the default form submission (page reload)
+        // Prevent the browser from performing its default form submission (page reload).
         event.preventDefault();
 
-        // This line selects all question blocks currently displayed
-        const blocks = document.querySelectorAll("#question-container > div");
-        // This line tracks the first unanswered block for focus/scroll behavior
-        let firstUnanswered = null;
-        // This line loops through each question block by its index
-        blocks.forEach((_, i) => {
-            // This line builds a selector for the checked radio in this question group
-            const sel = `input[name="answer${i}"]:checked`;
-            // This line finds the selected radio (if any)
-            const selected = document.querySelector(sel);
-            // This line gets the DOM element for the current block
-            const blockEl = blocks[i];
-            // This line checks whether the block has a selection
-            if (!selected) {
-                // This line adds a visual invalid state for unanswered questions
-                blockEl.classList.add("invalid");
-                // This line records the first unanswered block for later focus/scroll
-                if (!firstUnanswered) {
-                    firstUnanswered = blockEl;
-                }
-            } else {
-                // This line removes invalid highlighting if this block is answered
-                blockEl.classList.remove("invalid");
-            }
-        });
-
-        // This line checks if any block was unanswered
-        if (firstUnanswered) {
-            // This line alerts the user to complete all questions (simple, module-level UI)
-            alert("Please answer all questions before submitting.");
-            // This line attempts to focus the first radio inside the first unanswered block
-            const firstRadio = firstUnanswered.querySelector('input[type="radio"]');
-            // This line focuses the radio input if found to guide the user
-            if (firstRadio) firstRadio.focus();
-            // This line scrolls the block into view so the user sees where to act
-            firstUnanswered.scrollIntoView({ behavior: "smooth", block: "center" });
-            // This line aborts submission to enforce completion
-            return;
-        }
-
-        // This line reads and trims the player name from the username input
-        const nameInput = document.getElementById("username");
-        // This line stores the trimmed value
-        const playerName = (nameInput.value || "").trim();
-        // This line enforces that a name must be entered before submitting
-        if (playerName === "") {
-            // This line alerts the user to enter a name
-            alert("Please enter your name before finishing the game.");
-            // This line focuses the name input for convenience
-            nameInput.focus();
-            // This line aborts submission due to missing name
-            return;
-        }
-
-        // This line counts all question blocks (total questions)
-        const totalQuestions = blocks.length;
-        // This line counts the number of checked radios that are marked correct
-        const correctSelections = document.querySelectorAll(
-            'input[type="radio"][data-correct="true"]:checked'
+        // Compute how many question blocks are currently rendered.
+        const totalQuestions = document.querySelectorAll(
+            "#question-container > div"
         ).length;
+        // Start counters for correct answers and unanswered questions (validation).
+        let score = 0;
+        // Track unanswered so we can enforce completion before scoring.
+        let unanswered = 0;
 
-        // This line saves the username for convenience on future visits
-        localStorage.setItem("username", playerName);
-        // This line persists the score record using our storage helper
-        saveScoreToStorage(playerName, correctSelections, totalQuestions);
-        // This line re-renders the scoreboard from localStorage (authoritative list)
-        displayScores();
+        // Loop through each question index to find the selected answer.
+        for (let i = 0; i < totalQuestions; i++) {
+            // Build a selector that targets the checked radio for this question.
+            const selector = `input[name="answer${i}"]:checked`;
+            // Find the checked input (if any) for the current question.
+            const selected = document.querySelector(selector);
+            // If an option is selected and it carries the correct-answer data attribute, increase the score.
+            if (selected && selected.dataset && selected.dataset.correct === "true") {
+                // Increment the score for a correct selection.
+                score++;
+            // If there is no selection, increment unanswered count for validation.
+            } else if (!selected) {
+                // Increase the count of unanswered questions.
+                unanswered++;
+            }
+        }
 
-        // This line selects the table body for a quick immediate row append (visual continuity)
+        // If any questions are unanswered, alert and abort before scoring UI/persistence.
+        if (unanswered > 0) {
+            // Show a simple message so the user knows to finish all items first.
+            alert("Please answer all questions before submitting the game.");
+            // Stop here—do not write to the table or to storage yet.
+            return;
+        }
+
+        // Read the player name from the username input field and trim whitespace.
+        const trimmed = (usernameInput.value || "").trim();
+        // Use the trimmed value or a default of "Anonymous" if nothing was entered.
+        const playerName = trimmed || "Anonymous";
+
+        // Highlight per-question feedback by marking correct and selected incorrect options.
+        for (let i = 0; i < totalQuestions; i++) {
+            // Find the correct input for this question group using the data attribute.
+            const correctInput = document.querySelector(
+                `input[name="answer${i}"][data-correct="true"]`
+            );
+            // If we found the correct input, mark its label as correct.
+            if (correctInput && correctInput.parentElement) {
+                // Add the 'correct' class to the label containing the correct input.
+                correctInput.parentElement.classList.add("correct");
+            }
+            // Find the selected option (if any) for this question.
+            const selected = document.querySelector(`input[name="answer${i}"]:checked`);
+            // If the selected input exists and it is different from the correct input, mark it incorrect.
+            if (selected && selected !== correctInput && selected.parentElement) {
+                // Add the 'incorrect' class to the label containing the wrong selected input.
+                selected.parentElement.classList.add("incorrect");
+            }
+        }
+
+        // Build a readable summary string like "Nice job, Name! You scored X/Y."
+        const summaryText = `Nice job, ${playerName}! You scored ${score}/${totalQuestions}.`;
+        // Place the summary text into the result summary box.
+        resultSummary.textContent = summaryText;
+        // Ensure the result summary box is visible to the user.
+        resultSummary.classList.remove("hidden");
+
+        // Locate the tbody element where we will insert a new score row immediately (visual continuity).
         const tbody = document.querySelector("#score-table tbody");
-        // This line creates the new table row
+        // Create a new table row element for this player's result.
         const row = document.createElement("tr");
-        // This line creates a cell for the player's name
+        // Create a cell for the player name.
         const nameCell = document.createElement("td");
-        // This line fills the name cell with the player's name
+        // Set the text content of the name cell to the player's name.
         nameCell.textContent = playerName;
-        // This line creates a cell for the score text
+        // Create a cell for the player score.
         const scoreCell = document.createElement("td");
-        // This line sets the score cell as "correct/total"
-        scoreCell.textContent = `${correctSelections}/${totalQuestions}`;
-        // This line appends the cells to the row
+        // Set the text to "correct/total" so the user sees performance.
+        scoreCell.textContent = `${score}/${totalQuestions}`;
+        // Append the name cell to the new table row.
         row.appendChild(nameCell);
+        // Append the score cell to the new table row.
         row.appendChild(scoreCell);
-        // This line appends the row to the table body
+        // Append the completed row to the score table body.
         tbody.appendChild(row);
 
-        // This line reveals the New Player button so another round can begin
+        // Persist the score to localStorage so it survives page reloads.
+        saveScoreToStorage(playerName, score, totalQuestions); // JSON & storage patterns from notes. :contentReference[oaicite:4]{index=4}
+        // If the user actually typed a name, keep it as the default for next time.
+        if (trimmed) {
+            // Store the non-empty username so we can prefill it on the next load.
+            localStorage.setItem("triviaCurrentUser", trimmed);
+        }
+        // Re-render the scoreboard from storage so it reflects the full persisted list and sort.
+        displayScores();
+
+        // Reveal the "New Player" button so another attempt can be made.
         newPlayerButton.classList.remove("hidden");
-        // This line disables the submit button to prevent duplicate submissions
+        // Disable the submit button to prevent duplicate submissions for the same attempt.
         document.getElementById("submit-game").disabled = true;
-        // This line shows a quick summary alert of the player’s score
-        alert(playerName + ", your score is " + correctSelections + "/" + totalQuestions + ".");
     }
 
-    // ---------- Storage helpers (kept from earlier commits) ----------
+    // ---- Scoreboard sorting helpers (Commit 8) ----
 
-    // This function safely reads the scores array from localStorage
+    // Return the current sort preference from localStorage or a default.
+    function getSortPreference() {
+        // Read the stored preference string (if any).
+        const pref = localStorage.getItem("scoreSort");
+        // If nothing stored, fall back to "newest".
+        return pref || "newest";
+    }
+
+    // Apply the saved sort preference to the <select> control on load.
+    function applySavedSortPreference() {
+        // Read the current preference value.
+        const pref = getSortPreference();
+        // Set the select’s value so the UI reflects the stored preference.
+        sortSelect.value = pref;
+    }
+
+    // ---- Storage helpers (kept and used here) ----
+
+    // Safely read the stored scores array from localStorage.
     function getScoresFromStorage() {
-        // This line retrieves the JSON string for scores from localStorage
+        // Retrieve the JSON string for scores from localStorage.
         const raw = localStorage.getItem("scores");
-        // This line returns an empty array if nothing is stored
+        // If nothing is stored, return an empty array.
         if (!raw) {
+            // Return an empty list because there are no scores yet.
             return [];
         }
-        // This line attempts to parse the JSON text into a JavaScript array
+        // Try to parse the stored JSON safely in case it was corrupted.
         try {
-            // This line parses and returns the array of score objects
+            // Convert the JSON text into a JavaScript array of score objects.
             return JSON.parse(raw);
         } catch (e) {
-            // This line logs invalid storage data as a console error
-            console.error("Invalid scores in storage:", e); // :contentReference[oaicite:3]{index=3}
-            // This line returns an empty list so the app continues to function
+            // Log a warning so corruption is visible in the console (per Debugging notes).
+            console.error("Invalid scores in storage:", e); // :contentReference[oaicite:5]{index=5}
+            // Return an empty array to keep the app running.
             return [];
         }
     }
 
-    // This function writes the provided scores array back to localStorage
+    // Write the provided scores array back to localStorage.
     function setScoresInStorage(scoresArray) {
-        // This line converts the array into a JSON string
-        const text = JSON.stringify(scoresArray); // JSON methods per notes. :contentReference[oaicite:4]{index=4}
-        // This line saves the string under the "scores" key
+        // Convert the array of score objects into a JSON string.
+        const text = JSON.stringify(scoresArray); // :contentReference[oaicite:6]{index=6}
+        // Save the JSON string into localStorage under the "scores" key.
         localStorage.setItem("scores", text);
     }
 
-    // This function appends a new score record into persistent storage
+    // Append one new score object into persistent storage.
     function saveScoreToStorage(name, correct, total) {
-        // This line reads the existing scores (or an empty array)
+        // Read the current list from storage (or an empty array).
         const scores = getScoresFromStorage();
-        // This line constructs a score object with a timestamp for ordering if needed
+        // Create a new score record object with a timestamp used for sorting.
         const record = { name: name, correct: correct, total: total, ts: Date.now() };
-        // This line appends the new record
+        // Append the new record to the in-memory array.
         scores.push(record);
-        // This line writes the updated array back to storage
+        // Write the updated array back to storage.
         setScoresInStorage(scores);
     }
 
-    // This function renders the entire scoreboard from localStorage
+    // Render the scoreboard entirely from localStorage, applying the current sort preference.
     function displayScores() {
-        // This line selects the table body to insert rows
+        // Select the table body where rows will be displayed.
         const tbody = document.querySelector("#score-table tbody");
-        // This line clears existing rows to avoid duplication
+        // Clear any existing rows to avoid duplicates.
         tbody.innerHTML = "";
-        // This line reads all saved scores
+        // Read the array of saved scores from storage.
         const scores = getScoresFromStorage();
-        // This line loops over each score record and renders a row
+        // Read the sort preference to decide how to order the rows.
+        const pref = getSortPreference();
+
+        // Sort the scores array based on the selected preference (Commit 8).
+        // Note: We compare ratios for highest/lowest to be robust if totals vary.
+        if (pref === "newest") {
+            // Sort by descending timestamp (most recent first).
+            scores.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+        } else if (pref === "oldest") {
+            // Sort by ascending timestamp (oldest first).
+            scores.sort((a, b) => (a.ts || 0) - (b.ts || 0));
+        } else if (pref === "highest") {
+            // Sort by descending score ratio, then by most recent for ties.
+            scores.sort((a, b) => {
+                // Compute ratios safely to avoid division by zero.
+                const ra = a.total ? a.correct / a.total : 0;
+                const rb = b.total ? b.correct / b.total : 0;
+                // Compare ratios primarily.
+                if (rb !== ra) return rb - ra;
+                // Tie-break by timestamp (newest first).
+                return (b.ts || 0) - (a.ts || 0);
+            });
+        } else if (pref === "lowest") {
+            // Sort by ascending score ratio, then by oldest for ties.
+            scores.sort((a, b) => {
+                const ra = a.total ? a.correct / a.total : 0;
+                const rb = b.total ? b.correct / b.total : 0;
+                if (ra !== rb) return ra - rb;
+                // Tie-break by timestamp (oldest first).
+                return (a.ts || 0) - (b.ts || 0);
+            });
+        }
+
+        // Loop through each saved score and render a table row in the chosen order.
         scores.forEach(function (s) {
-            // This line creates a table row for the record
+            // Create a table row element for this saved record.
             const tr = document.createElement("tr");
-            // This line creates a cell for the player's name
+            // Create a cell for the player's name.
             const tdName = document.createElement("td");
-            // This line sets the player's name text
+            // Put the player's name into the first cell.
             tdName.textContent = s.name;
-            // This line creates a cell for the formatted score
+            // Create a cell for the formatted score.
             const tdScore = document.createElement("td");
-            // This line sets the score text as "correct/total"
+            // Set the score text as "correct/total".
             tdScore.textContent = s.correct + "/" + s.total;
-            // This line appends the name cell to the row
+            // Append the name cell to the row.
             tr.appendChild(tdName);
-            // This line appends the score cell to the row
+            // Append the score cell to the row.
             tr.appendChild(tdScore);
-            // This line appends the completed row to the table body
+            // Append the completed row to the tbody.
             tbody.appendChild(tr);
         });
     }
 
-    // ---------- Username helper and data-clear features ----------
-
-    // This function pre-fills the username input from localStorage, if available
+    // Prefill the username from localStorage if available.
     function checkUsername() {
-        // This line reads the stored "username" value (if any)
-        const savedName = localStorage.getItem("username");
-        // This line selects the username input element
-        const usernameInput = document.getElementById("username");
-        // This line writes the stored name into the input if present
-        if (savedName) {
-            usernameInput.value = savedName;
+        // Read any saved name for the current user from localStorage.
+        const stored = localStorage.getItem("triviaCurrentUser");
+        // If a stored value exists, place it into the input field.
+        if (stored) {
+            // Prefill the username input with the stored value.
+            usernameInput.value = stored;
         }
     }
 
-    // This function clears scores and saved username (Clear All Data action)
-    function clearAllData() {
-        // This line asks for confirmation before wiping all saved data
-        const ok = confirm("Clear ALL saved data (scores and saved name)? This cannot be undone.");
-        // This line aborts if the user cancels
-        if (!ok) return;
-        // This line removes the persisted scores list
-        localStorage.removeItem("scores");
-        // This line removes the saved username
-        localStorage.removeItem("username");
-        // This line clears the username input in the UI
-        document.getElementById("username").value = "";
-        // This line refreshes the scoreboard to show it is empty
-        displayScores();
-        // This line alerts the user that data has been cleared
-        alert("All saved data has been cleared.");
-    }
-
-    // This function clears only saved scores (retained from Commit 5)
-    function clearScores() {
-        // This line confirms the action to prevent accidental deletion
-        const ok = confirm("Clear all saved scores? This cannot be undone.");
-        // This line stops if the user cancels
-        if (!ok) return;
-        // This line sets scores to an empty array in storage
-        setScoresInStorage([]);
-        // This line re-renders the now-empty scoreboard
-        displayScores();
-    }
-
-    // This JSDoc explains the New Player behavior
-    /**
-     * Begins a new player session by resetting inputs, re-enabling submit,
-     * fetching fresh questions, and focusing the name field.
-     */
-    // This function resets the UI for a new round without clearing saved scores
+    // Begin a new player session by resetting UI state and fetching fresh questions.
     function newPlayer() {
-        // This line clears the username input so a different name can be entered
-        document.getElementById("username").value = "";
-        // This line re-enables the submit button for the next attempt
+        // Clear any previously entered name from the input.
+        usernameInput.value = "";
+        // Remove the saved current user so the field is blank next time.
+        localStorage.removeItem("triviaCurrentUser");
+        // Re-enable the submit button so the next submission is allowed.
         document.getElementById("submit-game").disabled = false;
-        // This line hides the New Player button until after the next submission
+        // Hide the New Player button again until after the next submission.
         newPlayerButton.classList.add("hidden");
-        // This line clears out any previously rendered questions
+        // Hide and clear the result summary text so the next round starts clean.
+        resultSummary.classList.add("hidden");
+        // Clear any previous message in the summary box.
+        resultSummary.textContent = "";
+        // Clear the existing questions so the next set won’t stack with the old ones.
         questionContainer.innerHTML = "";
-        // This line shows the loader while fetching new questions
+        // Show the loader while fetching new questions.
         showLoading(true);
-        // This line fetches a fresh set of questions to start a new round
+        // Fetch a fresh set of questions to start a new round.
         fetchQuestions();
-        // This line focuses the username field for convenience
-        document.getElementById("username").focus();
-        // This line scrolls to the top so the form is fully visible
-        window.scrollTo(0, 0);
+        // Put keyboard focus back into the name field for convenience.
+        usernameInput.focus();
+    }
+
+    // Implement the Clear Scores behavior (kept from an earlier commit).
+    function clearScores() {
+        // Ask the user for confirmation using the built-in confirm dialog.
+        const ok = window.confirm("Clear all saved scores? This cannot be undone.");
+        // If the user confirmed the action, proceed to wipe the scores.
+        if (ok) {
+            // Remove the 'scores' entry from localStorage to clear all saved attempts.
+            localStorage.removeItem("scores");
+            // Re-render the scoreboard so it immediately reflects the cleared state.
+            displayScores();
+        }
     }
 });
-// This line ends the DOMContentLoaded setup wrapper
+// End of DOMContentLoaded handler.
