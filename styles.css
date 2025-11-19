@@ -1,215 +1,285 @@
-/* Create a utility class to hide elements from layout and visibility */
+/* This rule defines a utility class used to completely hide elements */
 .hidden {
-    /* Remove the element from the document flow and hide it */
+    /* This declaration removes the element from layout and visibility */
     display: none;
 }
+/* This comment marks the end of the .hidden rule */
 
-/* Animate skeleton elements inside the loading container for a pulsing effect */
+
+/* This rule animates skeleton blocks inside the loading container */
 #loading-container .skeleton {
-    /* Apply the pulsing loading animation on a loop */
+    /* This declaration applies a pulsing animation to suggest loading */
     animation: loading 1.5s infinite ease-in-out;
 }
+/* This comment marks the end of the #loading-container .skeleton rule */
 
-/* Define a shimmer animation block (kept for potential use) */
+
+/* This keyframes block defines an optional shimmer (retained from base for reference) */
 @keyframes shimmer {
-    /* Start with the background positioned left */
+    /* This frame starts the background off-screen to the left */
     0% {
-        /* Place the background off the left side */
+        /* This declaration positions the background to begin a left-to-right shimmer */
         background-position: -100%;
     }
-    /* End with the background positioned right */
+    /* This frame ends the background off-screen to the right */
     100% {
-        /* Move the background across to the right side */
+        /* This declaration positions the background to finish the shimmer to the right */
         background-position: 100%;
     }
 }
+/* This comment marks the end of the @keyframes shimmer block */
 
-/* Base skeleton styling for loading placeholders */
+
+/* This rule styles each skeleton block used during loading */
 .skeleton {
-    /* Set a neutral gray background color */
+    /* This declaration sets a neutral gray background */
     background-color: #e0e0e0;
-    /* Round corners slightly for a modern look */
+    /* This declaration rounds the corners slightly */
     border-radius: 0.25rem;
-    /* Add vertical spacing between skeleton blocks */
+    /* This declaration adds vertical spacing between skeleton items */
     margin: 0.625rem 0;
 }
+/* This comment marks the end of the .skeleton rule */
 
-/* Size the option‑style skeleton to look like a question/answers area */
+
+/* This rule sets a tall height for option-sized skeletons */
 .skeleton-option {
-    /* Give the skeleton a tall height to mimic content */
+    /* This declaration gives the skeleton enough height to mimic a question area */
     height: 8em;
 }
+/* This comment marks the end of the .skeleton-option rule */
 
-/* Define the pulsing color animation for the skeleton blocks */
+
+/* This keyframes block defines the pulsing gray loading animation */
 @keyframes loading {
-    /* Start with the base gray tone */
+    /* This frame uses the base gray color */
     0% {
-        /* Use the base gray color */
         background-color: #e0e0e0;
     }
-    /* Lighten mid‑animation for a pulse effect */
+    /* This frame lightens the color mid-cycle */
     50% {
-        /* Use a lighter gray to simulate motion */
         background-color: #f0f0f0;
     }
-    /* Return to the base gray at the end of the cycle */
+    /* This frame returns to the original gray */
     100% {
-        /* Reset to the initial gray color */
         background-color: #e0e0e0;
     }
 }
+/* This comment marks the end of the @keyframes loading block */
 
-/* Set base typography and colors for the whole page */
+
+/* This rule sets global font and colors for the document */
 body {
-    /* Use Roboto with sensible sans‑serif fallbacks */
+    /* This declaration selects a clean sans-serif font stack */
     font-family: "Roboto", sans-serif;
-    /* Apply a light gray page background behind the card */
+    /* This declaration sets a light gray page background */
     background-color: #f5f5f5;
-    /* Use a dark text color for readable contrast */
+    /* This declaration uses a dark text color for readability */
     color: #333;
 }
+/* This comment marks the end of the body rule */
 
-/* Constrain and style the main game container card */
+
+/* This rule styles and centers the main game container card */
 #game-container {
-    /* Limit maximum width for readability on large screens */
+    /* This declaration constrains the maximum width for readable line length */
     max-width: 50rem;
-    /* Center the container and add outer spacing */
+    /* This declaration centers the container horizontally with vertical margins */
     margin: 1.25rem auto;
-    /* Add inner padding around content */
+    /* This declaration adds padding inside the card */
     padding: 1.25rem;
-    /* Use a white background for a clean card look */
+    /* This declaration sets a white background for the card */
     background-color: white;
-    /* Add a soft drop shadow for depth */
+    /* This declaration adds a soft shadow for visual depth */
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
 }
+/* This comment marks the end of the #game-container rule */
 
-/* Add spacing beneath the trivia form to separate it from the table */
+
+/* This rule adds spacing below the trivia form */
 #trivia-form {
-    /* Provide space below the form area */
+    /* This declaration separates the form from the table below */
     margin-bottom: 1.875rem;
 }
+/* This comment marks the end of the #trivia-form rule */
 
-/* Style each question block that will be inserted dynamically */
+
+/* This rule styles each dynamically inserted question block */
 #question-container > div {
-    /* Provide interior padding for comfortable reading */
+    /* This declaration adds inner padding for comfortable reading */
     padding: 0.9375rem;
-    /* Separate questions with vertical spacing */
+    /* This declaration adds space below each block */
     margin-bottom: 0.625rem;
-    /* Add a light border to delineate the block */
+    /* This declaration draws a subtle border around the block */
     border: 1px solid #ddd;
-    /* Slightly round the corners of the block */
+    /* This declaration lightly rounds the corners */
     border-radius: 0.3125rem;
-    /* Use a very light background for question blocks */
+    /* This declaration sets a very light background for contrast */
     background-color: #fafafa;
 }
+/* This comment marks the end of the #question-container > div rule */
 
-/* Style the paragraph that contains each question text */
+
+/* This rule styles the question text inside each block */
 #question-container p {
-    /* Remove default top margin and keep a bit below */
+    /* This declaration removes top margin and leaves a small bottom margin */
     margin: 0 0 0.625rem 0;
-    /* Make the question text slightly bolder */
+    /* This declaration emphasizes the question text slightly */
     font-weight: 500;
 }
+/* This comment marks the end of the #question-container p rule */
 
-/* Make labels block‑level so each answer is easy to tap/click */
+
+/* This rule ensures answer labels stack vertically and are clickable */
 label {
-    /* Force each label onto its own line */
+    /* This declaration makes each label take a full line */
     display: block;
-    /* Add small vertical spacing between labels */
+    /* This declaration adds small vertical spacing between options */
     margin: 0.3125rem 0;
-    /* Indicate interactivity on hover */
+    /* This declaration shows a pointer cursor to indicate interactivity */
     cursor: pointer;
 }
+/* This comment marks the end of the label rule */
 
-/* Add spacing between radio inputs and their label text */
+
+/* This rule spaces radio inputs from their label text */
 input[type="radio"] {
-    /* Push the label text away from the radio control */
+    /* This declaration adds right margin for breathing room */
     margin-right: 0.625rem;
 }
+/* This comment marks the end of the input[type="radio"] rule */
 
-/* Style the username text input field */
+
+/* This rule styles the username input field */
 #username {
-    /* Add interior padding for comfortable typing */
+    /* This declaration adds inner padding for comfortable typing */
     padding: 0.625rem;
-    /* Draw a light border around the input */
+    /* This declaration draws a light border around the input */
     border: 1px solid #ddd;
-    /* Slightly round the input’s corners */
+    /* This declaration rounds the corners slightly */
     border-radius: 0.3125rem;
-    /* Add space below the input before the button */
+    /* This declaration adds space below the input field */
     margin-bottom: 0.9375rem;
 }
+/* This comment marks the end of the #username rule */
 
-/* Provide consistent base styles for all buttons */
+
+/* This rule provides consistent styling for all buttons */
 button {
-    /* Use white text for strong contrast */
+    /* This declaration sets white text for strong contrast */
     color: white;
-    /* Remove default borders for a clean look */
+    /* This declaration removes default borders */
     border: none;
-    /* Add padding to increase the hit area */
+    /* This declaration increases the clickable area with padding */
     padding: 0.625rem 1.25rem;
-    /* Slightly round the button corners */
+    /* This declaration rounds the corners slightly */
     border-radius: 0.3125rem;
-    /* Show a pointer cursor when hovering over buttons */
+    /* This declaration shows a pointer cursor on hover */
     cursor: pointer;
-    /* Use a readable base font size */
+    /* This declaration sets a readable base font size */
     font-size: 1rem;
 }
+/* This comment marks the end of the button rule */
 
-/* Style the primary submit (Finish Game) button */
+
+/* This rule sets the primary color for the submit button */
 #submit-game {
-    /* Use a purple background for the primary action */
+    /* This declaration uses a purple background for the primary action */
     background-color: #6200ea;
 }
+/* This comment marks the end of the #submit-game rule */
 
-/* Darken the submit button on hover to provide feedback */
+
+/* This rule slightly darkens the submit button on hover */
 #submit-game:hover {
-    /* Apply a darker purple on hover */
+    /* This declaration uses a darker purple to indicate hover state */
     background-color: #3700b3;
 }
+/* This comment marks the end of the #submit-game:hover rule */
 
-/* Style the New Player button to stand out as a “reset/start over” action */
+
+/* This rule colors the New Player button for a reset/start-over action */
 #new-player {
-    /* Use a red background to indicate a disruptive/change action */
+    /* This declaration uses a red background to signify a new round */
     background-color: #ff0000;
 }
+/* This comment marks the end of the #new-player rule */
 
-/* Darken the New Player button on hover for interactivity feedback */
+
+/* This rule darkens the New Player button on hover */
 #new-player:hover {
-    /* Apply a darker red on hover */
+    /* This declaration uses a deeper red on hover for feedback */
     background-color: #e50000;
 }
+/* This comment marks the end of the #new-player:hover rule */
 
-/* Style the score table so it uses the full width and clean borders */
+
+/* This rule makes the score table full-width and collapses borders */
 #score-table {
-    /* Stretch the table to the container width */
+    /* This declaration stretches the table to the container width */
     width: 100%;
-    /* Collapse borders so adjacent cells share borders */
+    /* This declaration collapses borders into a single grid */
     border-collapse: collapse;
-    /* Add a top margin to separate from content above */
+    /* This declaration adds top margin to separate the table from the form */
     margin-top: 1.25rem;
 }
+/* This comment marks the end of the #score-table rule */
 
-/* Style header and data cells with borders and padding */
+
+/* This rule styles both header and data cells in the table */
 #score-table th,
 #score-table td {
-    /* Draw a light border around each cell */
+    /* This declaration draws a light border around each cell */
     border: 1px solid #ddd;
-    /* Add padding inside cells for readability */
+    /* This declaration adds inner cell padding for readability */
     padding: 0.75rem;
-    /* Left-align text for a standard table look */
+    /* This declaration left-aligns text in table cells */
     text-align: left;
 }
+/* This comment marks the end of the shared table cell rule */
 
-/* Style the Clear Scores button added earlier */
+
+/* This rule styles the Clear Scores button (from Commit 5) */
 #clear-scores {
-    /* Use a neutral dark gray to signal a data-management action */
-    background-color: #444;
-    /* Add space above to separate it from the table */
-    margin-top: 0.75rem;
+    /* This declaration adds top margin to separate the button from the table */
+    margin-top: 1rem;
+    /* This declaration sets a neutral/dark button color */
+    background-color: #666666;
 }
+/* This comment marks the end of the #clear-scores rule */
 
-/* Darken the Clear Scores button on hover for feedback */
+
+/* This rule provides a hover color for the Clear Scores button */
 #clear-scores:hover {
-    /* Use a deeper gray on hover */
-    background-color: #222;
+    /* This declaration darkens the button for hover feedback */
+    background-color: #4d4d4d;
 }
+/* This comment marks the end of the #clear-scores:hover rule */
+
+
+/* This rule styles the Clear All Data button (from Commit 6) */
+#clear-all {
+    /* This declaration adds a small top margin so buttons do not crowd each other */
+    margin-top: 0.5rem;
+    /* This declaration uses a warm tone to signal a full data wipe */
+    background-color: #a66a00;
+}
+/* This comment marks the end of the #clear-all rule */
+
+
+/* This rule provides a hover color for the Clear All Data button */
+#clear-all:hover {
+    /* This declaration darkens the button color when hovered */
+    background-color: #7a4f00;
+}
+/* This comment marks the end of the #clear-all:hover rule */
+
+
+/* This rule highlights unanswered question blocks (added in Commit 7) */
+#question-container > div.invalid {
+    /* This declaration changes the border color to a warning red */
+    border-color: #d93025;
+    /* This declaration adds a subtle tinted background for visibility */
+    background-color: #fff5f5;
+}
+/* This comment marks the end of the .invalid highlighting rule */
